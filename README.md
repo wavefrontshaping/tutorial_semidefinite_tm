@@ -12,7 +12,7 @@ This approach was first proposed in [I. Waldspurger *et al.*, Math. Program (201
 
 Let's consider a linear medium of transmission matrix $\mathbf{H}$ of size $M\times N$ that links the input field $x$ to the output one $y$. The $j^\text{th}$ line of the transmission matrix $H_i$ corresponds to the effect of the different input elements on the $j^\text{th}$ output measurement point of the field $y_j$. The reconstruction of each line of the matrix can be treated independently, we consider only the output pixel $j$ in the following.
 
-We consider that we have at our disposal a set of input/output pairs $\left\{X^k,\lvert Y_j^k \rvert \right\}$, with $k \in [1...P]$, where $X_k$ is a complex vector corresponding to an input wavefront, $Y_j^k=\mathbf{H}X^k= \lvert Y_j^k\rvert \exp^{i\Phi_k}$ is the corresponding output complex field and $P$ is the number of elements in the data set. $\mathbf{X}$ is the matrix containing all the input training masks, and $Y_j$ is the vector containing the output fields at the target point $j$ for all input masks.
+We consider that we have at our disposal a set of input/output pairs $\left\{X^k,\lvert Y_j^k \rvert \right}$, with $k \in [1...P]$, where $X_k$ is a complex vector corresponding to an input wavefront, $Y_j^k=\mathbf{H}X^k= \lvert Y_j^k\rvert \exp^{i\Phi_k}$ is the corresponding output complex field and $P$ is the number of elements in the data set. $\mathbf{X}$ is the matrix containing all the input training masks, and $Y_j$ is the vector containing the output fields at the target point $j$ for all input masks.
 
 As we only have access to the amplitude $\lvert Y_j\rvert$ of the output field, we want to solve:
 
