@@ -10,48 +10,48 @@ This approach was first proposed in [I. Waldspurger *et al.*, Math. Program (201
 
 ## The mathematical problem
 
-Let's consider a linear medium of transmission matrix \(\mathbf{H}\) of size \(M\times N\) that links the input field \(x\) to the output one \(y\). The \(j^\text{th}\) line of the transmission matrix \(H_i\) corresponds to the effect of the different input elements on the \(j^\text{th}\) output measurement point of the field \(y_j\). The reconstruction of each line of the matrix can be treated independently, we consider only the output pixel \(j\) in the following.
+Let's consider a linear medium of transmission matrix $\mathbf{H}$ of size $M\times N$ that links the input field $x$ to the output one $y$. The $j^\text{th}$ line of the transmission matrix $H_i$ corresponds to the effect of the different input elements on the $j^\text{th}$ output measurement point of the field $y_j$. The reconstruction of each line of the matrix can be treated independently, we consider only the output pixel $j$ in the following.
 
-We consider that we have at our disposal a set of input/output pairs \(\left\{X^k,\lvert Y_j^k\rvert\right\}\), with \(k \in [1...P]\), where \(X_k\) is a complex vector corresponding to an input wavefront, \(Y_j^k=\mathbf{H}X^k= \lvert Y_j^k\rvert \exp^{i\Phi_k}\) is the corresponding output complex field and \(P\) is the number of elements in the data set. \(\mathbf{X}\) is the matrix containing all the input training masks, and \(Y_j\) is the vector containing the output fields at the target point \(j\) for all input masks.
+We consider that we have at our disposal a set of input/output pairs $\left\{X^k,\lvert Y_j^k\rvert\right\}$, with $k \in [1...P]$, where $X_k$ is a complex vector corresponding to an input wavefront, $Y_j^k=\mathbf{H}X^k= \lvert Y_j^k\rvert \exp^{i\Phi_k}$ is the corresponding output complex field and $P$ is the number of elements in the data set. $\mathbf{X}$ is the matrix containing all the input training masks, and $Y_j$ is the vector containing the output fields at the target point $j$ for all input masks.
 
-As we only have access to the amplitude \(\lvert Y_j\rvert\) of the output field, we want to solve:
+As we only have access to the amplitude $\lvert Y_j\rvert$ of the output field, we want to solve:
 
-\[
+```math
 \begin{aligned}
     \text{min.} & \quad \lVert H_j\mathbf{X}-\lvert Y_j\rvert\exp^{i\Phi_j}\rVert_ 2^2 \\
     \text{subject to} & \quad H_j \in \mathbb{C}^M, \, \Phi_j \in [0,2\pi]^P
 \end{aligned}
-\]
+```
 
 It is shown in [I. Waldspurger *et al.*, Math. Program (2015)](https://doi.org/10.1007/s10107-013-0738-9) that this expression can be simply rearranged to become:
 
-\[
+```math
 \begin{aligned}
     \text{min.} & \quad u^\dagger \mathbf{Q} u = \mathrm{Tr}\left(\mathbf{Q}u u^\dagger\right) \\
     \text{subject to} & \quad H_j \in \mathbb{C}^M, \,u\in\mathbb{C}^P,\,\lvert u_k\rvert=1 \quad \forall k\in[0..P]
 \end{aligned}
-\]
+```
 
-with \(\mathbf{Q} = \text{diag}(\lvert Y_j\rvert)\left(\mathbf{I}-\mathbf{X}\mathbf{X}^p\right) \text{diag}(\lvert Y_j\rvert)\).
+with $\mathbf{Q} = \text{diag}(\lvert Y_j\rvert)\left(\mathbf{I}-\mathbf{X}\mathbf{X}^p\right) \text{diag}(\lvert Y_j\rvert)$.
 
-\(^p\) stands for the Moore-Penrose pseudoinverse and \(\dagger\) for the transpose conjugate. The vector \(u\) contains the phase of the \(j^\text{th}\) output point for all the elements of the data set, so that \(u_k=\exp^{i\Phi_k}\). The equivalence between these two expressions is guaranteed by the fact that \(\mathbf{Q}\) is a positive semidefinite Hermitian matrix.
+\(^p$ stands for the Moore-Penrose pseudoinverse and $\dagger$ for the transpose conjugate. The vector $u$ contains the phase of the $j^\text{th}$ output point for all the elements of the data set, so that $u_k=\exp^{i\Phi_k}$. The equivalence between these two expressions is guaranteed by the fact that $\mathbf{Q}$ is a positive semidefinite Hermitian matrix.
 
-By construction \(\mathbf{U}=u_j u_j^\dagger\) is of rank equal to \(1\). By relaxing this constraint, this problem can be written as a convex problem that can be solved using semidefinite programming:
+By construction $\mathbf{U}=u_j u_j^\dagger$ is of rank equal to $1$. By relaxing this constraint, this problem can be written as a convex problem that can be solved using semidefinite programming:
 
-\[
+```math
 \begin{aligned}
     \text{min.} & \quad \mathrm{Tr}\left(\mathbf{Q}\mathbf{U}\right) \\
     \text{subject to} & \quad \mathbf{U}=\mathbf{U}^\dagger,\, \text{diag}\left(\mathbf{U}\right) = 1, \mathbf{U} \succeq 0
 \end{aligned}
-\]
+```
 
-with \(\mathbf{U} \succeq 0\) denoting the positive semidefinite constraint on \(\mathbf{U}\). We can now use standard convex solvers to find a solution. The difficulty is that \(\mathbf{U}\) is not of rank \(1\) anymore. To find an approximate solution, we take the first singular vector \(V_0\) of \(\mathbf{U}\) which gives the phase of the output field with good accuracy.
+with $\mathbf{U} \succeq 0$ denoting the positive semidefinite constraint on $\mathbf{U}$. We can now use standard convex solvers to find a solution. The difficulty is that $\mathbf{U}$ is not of rank $1$ anymore. To find an approximate solution, we take the first singular vector $V_0$ of $\mathbf{U}$ which gives the phase of the output field with good accuracy.
 
 Now that we have the complex output field, we can use a pseudo-inversion to retrieve the transmission matrix.
 
-\[
+```math
 H_j = \lvert Y \rvert V_0\mathbf{X}^p
-\]
+```
 
 ## Python implementation
 
