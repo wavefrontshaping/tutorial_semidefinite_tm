@@ -1,4 +1,4 @@
-## Semidefinite Programming for Intensity Only Estimation of the Transmission Matrix
+## TUTORIAL: Semidefinite Programming for Intensity Only Estimation of the Transmission Matrix
 
 The possibility of measuring the transmission matrix using intensity-only measurements is a much sought-after feature as it allows us not to rely on interferometry. Interferometry usually requires laboratory-grade stability difficult to obtain for real-world applications. Typically, we want to be able to retrieve the transmission matrix from a set of pairs composed of input masks and output intensity patterns. However, this problem, which corresponds to a phase-retrieval problem, is not convex, hence difficult to solve using standard techniques. The idea proposed in [I. Waldspurger *et al.*, Math. Program (2015)](https://doi.org/10.1007/s10107-013-0738-9) is to relax some constraints to approximate the problem to a convex one that can be solved using the semidefinite programming approach. I briefly detail the approach and provide an example of the procedure to reconstruct the transmission matrix using Python. A Jupyter notebook can be found on my Github account: [semidefiniteTM_example.ipynb](https://github.com/wavefrontshaping/WFS.net/blob/master/semidefiniteTM_example.ipynb).
 
@@ -12,7 +12,7 @@ This approach was first proposed in [I. Waldspurger *et al.*, Math. Program (201
 
 Let's consider a linear medium of transmission matrix $\mathbf{H}$ of size $M\times N$ that links the input field $x$ to the output one $y$. The $j^\text{th}$ line of the transmission matrix $H_i$ corresponds to the effect of the different input elements on the $j^\text{th}$ output measurement point of the field $y_j$. The reconstruction of each line of the matrix can be treated independently, we consider only the output pixel $j$ in the following.
 
-We consider that we have at our disposal a set of input/output pairs $\left\{X^k,\lvert Y_j^k \rvert \right}$, with $k \in [1...P]$, where $X_k$ is a complex vector corresponding to an input wavefront, $Y_j^k=\mathbf{H}X^k= \lvert Y_j^k\rvert \exp^{i\Phi_k}$ is the corresponding output complex field and $P$ is the number of elements in the data set. $\mathbf{X}$ is the matrix containing all the input training masks, and $Y_j$ is the vector containing the output fields at the target point $j$ for all input masks.
+We consider that we have at our disposal a set of input/output pairs $\left{X^k,\lvert Y_j^k \rvert \right}$, with $k \in [1...P]$, where $X_k$ is a complex vector corresponding to an input wavefront, $Y_j^k=\mathbf{H}X^k= \lvert Y_j^k\rvert \exp^{i\Phi_k}$ is the corresponding output complex field and $P$ is the number of elements in the data set. $\mathbf{X}$ is the matrix containing all the input training masks, and $Y_j$ is the vector containing the output fields at the target point $j$ for all input masks.
 
 As we only have access to the amplitude $\lvert Y_j\rvert$ of the output field, we want to solve:
 
@@ -36,7 +36,7 @@ with $\mathbf{Q} = \text{diag}(\lvert Y_j\rvert)\left(\mathbf{I}-\mathbf{X}\math
 
 $^p$ stands for the Moore-Penrose pseudoinverse and $\dagger$ for the transpose conjugate. The vector $u$ contains the phase of the $j^\text{th}$ output point for all the elements of the data set, so that $u_k=\exp^{i\Phi_k}$. The equivalence between these two expressions is guaranteed by the fact that $\mathbf{Q}$ is a positive semidefinite Hermitian matrix.
 
-By construction $\mathbf{U}=u_j u_j^\dagger$ is of rank equal to $1$. By relaxing this constraint, this problem can be written as a convex problem that can be solved using semidefinite programming:
+By construction, $\mathbf{U}=u_j u_j^\dagger$ is of rank equal to $1$. By relaxing this constraint, this problem can be written as a convex problem that can be solved using semidefinite programming:
 
 ```math
 \begin{aligned}
