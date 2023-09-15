@@ -55,8 +55,6 @@ H_j = \lvert Y \rvert V_0\mathbf{X}^p
 
 ## Python implementation
 
-## Python implementation
-
 The only important part concerns solving the convex problem. In **Python**, [CVXPY](https://www.cvxpy.org/) allows writing the problem in a natural way, i.e. exactly as we wrote it in equation (3). The **Matlab** module [CVX](http://cvxr.com/cvx/) does the same thing.
 
 The part of the code that corresponds to solving the convex problem is very concise:
@@ -78,3 +76,11 @@ prob = Problem(objective, constraints)
 # Run the solver
 prob.solve(solver=SCS, verbose=True, eps=1e-5, max_iters=100000)
 ```
+
+## Full example
+A full Python code that simulates the reconstruction of a random transmission matrix using this procedure in the presence of noise can be found [here](./semidefiniteTM_example.ipynb).
+
+ 
+## Remarks
+
+Using this approach, which is also the case when using machine learning, the output pixels are treated independently. For each output pixel, the system is not sensitive to a global phase shift or conjugation. That implies that the relative phase between the lines of the matrix is not known. That is not detrimental for the generation of output intensity patterns, but can be otherwise important. It would then require an additional measurement to find these relative phases.
