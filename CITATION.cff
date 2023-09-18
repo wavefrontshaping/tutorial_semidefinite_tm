@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this material, please cite it as below."
+authors:
+  - family-names: Popoff
+    given-names: Sébastien
+    orcid: https://orcid.org/0000-0002-7199-9814
+title: "TUTORIAL: Semidefinite Programming for Intensity Only Estimation of the Transmission Matrix"
+version: 1.0
+doi: 10.5281/zenodo.8347851
+date-released: 2023-09-18
